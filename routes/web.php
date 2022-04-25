@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Controllers\TemporadasController;
+use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -20,4 +22,14 @@ Route::get('/', function () {
 Route::get('/ola', function(){
     echo 'Olá Jean!';
 });
+
+Route::get('/series', 'SeriesController@index')
+    ->name('series.index');
+Route::get('/series/adicionar', 'SeriesController@create')
+    ->name('criar');
+Route::post('/series/adicionar', 'SeriesController@store');
+
+Route::delete('/series/{id}', 'SeriesController@destroy');
+
+Route::get('/series/{serieId}/temporadas', 'TemporadasController@index');
     
