@@ -11,8 +11,7 @@
 |
 */
 
-use App\Http\Controllers\TemporadasController;
-use Illuminate\Routing\Route as RoutingRoute;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,13 +22,42 @@ Route::get('/ola', function(){
     echo 'Olá Jean!';
 });
 
-Route::get('/series', 'SeriesController@index')
-    ->name('series.index');
-Route::get('/series/adicionar', 'SeriesController@create')
-    ->name('criar');
-Route::post('/series/adicionar', 'SeriesController@store');
+Route::get('/series', 'SeriesController@index')->name('series.index');
 
-Route::delete('/series/{id}', 'SeriesController@destroy');
+Route::get('/series/adicionar', 'SeriesController@create')
+    ->name('criar')
+    ->middleware('autenticador');
+
+Route::post('/series/adicionar', 'SeriesController@store')
+    ->middleware('autenticador');
+
+Route::delete('/series/{id}', 'SeriesController@destroy')
+    ->middleware('autenticador');
 
 Route::get('/series/{serieId}/temporadas', 'TemporadasController@index');
-    
+
+Route::post('/series/{id}/editaNome', 'SeriesController@editaNome')
+    ->middleware('autenticador');
+
+Route::get('/temporadas/{temporada}/episodios', 'EpisodiosController@index');
+
+Route::post('/temporadas/{temporada}/episodios/assistir', 'EpisodiosController@assistir')
+    ->middleware('autenticador');
+
+Auth::routes();
+
+//Route::get('/series', 'SeriesController@index')->name('home');
+
+Route::get('/entrar', 'EntrarController@index')
+    ->name('entrar');
+
+Route::post('/entrar', 'EntrarController@entrar');
+
+Route::get('/registrar', 'RegistroController@create');
+
+Route::post('/registrar', 'RegistroController@store');
+
+Route::get('/sair', function(){
+    Auth::logout();
+    return redirect('/entrar');
+});

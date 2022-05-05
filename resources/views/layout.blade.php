@@ -10,6 +10,14 @@
     <script src="https://kit.fontawesome.com/35d09d91cb.js" crossorigin="anonymous"></script>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 d-flex justify-content-between">
+        <a class="navbar-brand" href="{{route('series.index')}}">Home</a>
+        @auth
+            <a class="text-danger" href="/sair">Sair</a>
+        @else
+            <a class="text-success" href="/entrar">Entrar</a>
+        @endauth
+    </nav>
     <div class="container">
         <div class="jumbotron">
             <h1>@yield('cabecalho')</h1>
