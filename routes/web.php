@@ -1,4 +1,5 @@
 <?php
+namespace App;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +13,7 @@
 */
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -60,4 +62,30 @@ Route::post('/registrar', 'RegistroController@store');
 Route::get('/sair', function(){
     Auth::logout();
     return redirect('/entrar');
+});
+
+Route::get('/visualizando-email', function ()
+{
+    return new \App\Mail\NovaSerie('Arrow',2,2);
+});
+
+Route::get('/enviando-email', function ()
+{
+    //pagina que será enviada por email
+    $email = new \App\Mail\NovaSerie('Arrow',2,2);
+    
+    //titulo do email
+    $email->subject = 'Nova Série Adicionada';
+
+    //dados do usuário
+    $user = (object)[
+        'email' => 'jean@teste.com',
+        'name'  => 'Jean'
+    ];
+
+    //envio do email
+    Mail::to($user)->send($email);
+
+    //retorno da rota
+    return 'Email enviado!';
 });

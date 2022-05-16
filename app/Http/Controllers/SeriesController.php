@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NovaSerie;
 use App\Serie;
 use Illuminate\Http\Request;
 use App\Services\CriadorDeSerie;
-use App\Http\Requests\SeriesFormRequest;
 use App\Services\RemovedorDeSerie;
+use App\User;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\SeriesFormRequest;
 
 class SeriesController extends Controller
 {
@@ -33,6 +36,16 @@ class SeriesController extends Controller
             $request->qtd_temporadas,
             $request->ep_por_temporada
         );
+
+        $eventoNovaSerie = new NovaSerie(
+            $request->nome,
+            $request->qtd_temporadas,
+            $request->ep_por_temporada
+
+        );
+
+        event($eventoNovaSerie);
+
         $request->session()
             ->flash(
                 'mensagem',
