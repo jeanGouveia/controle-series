@@ -24,7 +24,8 @@ Route::get('/ola', function(){
     echo 'Olá Jean!';
 });
 
-Route::get('/series', 'SeriesController@index')->name('series.index');
+Route::get('/series', 'SeriesController@index')
+    ->name('series.index');
 
 Route::get('/series/adicionar', 'SeriesController@create')
     ->name('criar')
